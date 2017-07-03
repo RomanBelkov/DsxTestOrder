@@ -10,13 +10,10 @@ import javax.crypto.spec.SecretKeySpec
 class Authenticator {
     private val HMAC_SHA512 = "HmacSHA512"
 
-    private val resourceBundle = ResourceBundle.getBundle("keys")
-    private val apiSecret = resourceBundle.getString("apiSecret")
-
-    fun getSignature(parameters : Map<String, Any>) : String {
+    fun getSignature(secretKey : String, parameters : Map<String, Any?>) : String {
         val queryString = mapToQueryString(parameters)
         val mac = Mac.getInstance(HMAC_SHA512)
-        mac.init(SecretKeySpec(apiSecret.toByteArray(), HMAC_SHA512))
+        mac.init(SecretKeySpec(secretKey.toByteArray(), HMAC_SHA512))
         return String(Base64.getEncoder().encode(mac.doFinal(queryString.toByteArray())))
     }
 
