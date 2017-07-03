@@ -13,7 +13,7 @@ class Authenticator {
     private val resourceBundle = ResourceBundle.getBundle("keys")
     private val apiSecret = resourceBundle.getString("apiSecret")
 
-    fun getSignature(parameters : Map<String, Number>) : String {
+    fun getSignature(parameters : Map<String, Any>) : String {
         val queryString = mapToQueryString(parameters)
         val mac = Mac.getInstance(HMAC_SHA512)
         mac.init(SecretKeySpec(apiSecret.toByteArray(), HMAC_SHA512))

@@ -26,7 +26,7 @@ class StatusTest {
     @Test
     fun createdOrderOK() {
         val validOrderId = 9009797
-        val params = hashMapOf<String, Number>("orderId" to validOrderId, "nonce" to System.nanoTime())
+        val params = hashMapOf("orderId" to validOrderId, "nonce" to System.currentTimeMillis())
         given()
                 .spec(spec)
                 .header("Sign", authenticator.getSignature(params))
@@ -38,9 +38,9 @@ class StatusTest {
     }
 
     @Test
-    fun InvalidOrder() {
-        val validOrderId = -1
-        val params = hashMapOf<String, Number>("orderId" to validOrderId, "nonce" to System.nanoTime())
+    fun InvalidOrderId() {
+        val invalidOrderId = -1
+        val params = hashMapOf("orderId" to invalidOrderId, "nonce" to System.currentTimeMillis())
         given()
                 .spec(spec)
                 .header("Sign", authenticator.getSignature(params))
