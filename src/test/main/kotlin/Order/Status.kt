@@ -1,29 +1,11 @@
+import Helper.resourceBundle
+import Helper.spec
 import com.jayway.restassured.RestAssured.given
-import com.jayway.restassured.builder.RequestSpecBuilder
-import com.jayway.restassured.filter.log.RequestLoggingFilter
-import com.jayway.restassured.filter.log.ResponseLoggingFilter
-import com.jayway.restassured.specification.RequestSpecification
-import org.hamcrest.Matchers.*
-import org.junit.*
-import java.util.*
+import org.hamcrest.Matchers.equalTo
+import org.junit.Test
 
 class StatusTest {
-    private val authenticator = Authenticator()
     private val validOrderId = 9009797
-
-    companion object {
-        private val resourceBundle = ResourceBundle.getBundle("keys")
-        lateinit var spec: RequestSpecification
-        @BeforeClass
-        @JvmStatic fun initSpec() {
-            spec = RequestSpecBuilder()
-                    .setBaseUri("https://dsx.uk/tapi/v2/order/status")
-                    .addHeader("Key", resourceBundle.getString("apiPublic"))
-                    .addFilter(ResponseLoggingFilter())
-                    .addFilter(RequestLoggingFilter())
-                    .build()
-        }
-    }
 
     @Test
     fun createdOrderOK() {
@@ -87,10 +69,10 @@ class StatusTest {
         val params = hashMapOf("orderId" to orderId, "nonce" to System.currentTimeMillis())
         given()
                 .spec(spec)
-                .header("Sign", authenticator.getSignature(resourceBundle.getString("apiSecret"), params))
+                .header("Sign", Authenticator.getSignature(resourceBundle.getString("apiSecret"), params))
                 .params(params)
         .`when`()
-                .post()
+                .post("/status")
         .then()
                 .statusCode(200)
         .assertThat()
