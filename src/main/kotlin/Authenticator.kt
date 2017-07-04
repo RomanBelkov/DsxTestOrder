@@ -7,7 +7,7 @@ import javax.crypto.Mac
 import javax.crypto.spec.SecretKeySpec
 
 
-class Authenticator {
+object Authenticator {
     private val HMAC_SHA512 = "HmacSHA512"
 
     fun getSignature(secretKey : String, parameters : Map<String, Any?>) : String {
