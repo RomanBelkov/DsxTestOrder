@@ -6,8 +6,8 @@ import com.jayway.restassured.filter.log.RequestLoggingFilter
 import com.jayway.restassured.filter.log.ResponseLoggingFilter
 import com.jayway.restassured.specification.RequestSpecification
 import org.junit.BeforeClass
-import java.util.*
 import Authenticator
+import Helper.resourceBundle
 import org.hamcrest.Matchers
 import org.junit.Test
 
@@ -16,10 +16,9 @@ import org.junit.Test
  */
 
 class PermissionsTest {
-    private val authenticator = Authenticator()
+    private val apiSecretNoTradingKey = resourceBundle.getString("apiSecretNoTrading")
 
     companion object {
-        private val resourceBundle = ResourceBundle.getBundle("keys")
         lateinit var spec: RequestSpecification
         @BeforeClass
         @JvmStatic fun initSpec() {
@@ -44,7 +43,7 @@ class PermissionsTest {
                 "nonce" to System.currentTimeMillis())
         given()
                 .spec(spec)
-                .header("Sign", authenticator.getSignature(resourceBundle.getString("apiSecretNoTrading"), params))
+                .header("Sign", Authenticator.getSignature(apiSecretNoTradingKey, params))
                 .params(params)
         .`when`()
                 .post("/new")
@@ -58,11 +57,11 @@ class PermissionsTest {
     @Test
     fun CancellingOrderWithoutPermissionFails() {
         val params = hashMapOf(
-                "orderId" to CreateNewOrder(),
+                "orderId" to CreateNewOrder(basicParams),
                 "nonce" to System.currentTimeMillis())
         given()
                 .spec(spec)
-                .header("Sign", authenticator.getSignature(resourceBundle.getString("apiSecretNoTrading"), params))
+                .header("Sign", Authenticator.getSignature(apiSecretNoTradingKey, params))
                 .params(params)
         .`when`()
                 .post("/cancel")
@@ -78,7 +77,7 @@ class PermissionsTest {
         val params = hashMapOf("orderId" to validOrderId, "nonce" to System.currentTimeMillis())
         given()
                 .spec(spec)
-                .header("Sign", authenticator.getSignature(resourceBundle.getString("apiSecretNoTrading"), params))
+                .header("Sign", Authenticator.getSignature(apiSecretNoTradingKey, params))
                 .params(params)
         .`when`()
                 .post("/status")
