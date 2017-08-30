@@ -11,7 +11,7 @@ object Helper {
     val resourceBundle = ResourceBundle.getBundle("keys")!!
 
     val spec = RequestSpecBuilder()
-            .setBaseUri("https://dsx.uk/tapi/v2/order")
+            .setBaseUri("https://dsx.uk/tapi/v2")
             .addHeader("Key", resourceBundle.getString("apiPublic"))
             .addFilter(ResponseLoggingFilter())
             .addFilter(RequestLoggingFilter())

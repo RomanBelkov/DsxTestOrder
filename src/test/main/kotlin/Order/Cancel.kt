@@ -13,9 +13,9 @@ import org.junit.Test
 class CancelTest {
     private val correctNewOrderParams = hashMapOf(
             "type" to "buy",
-            "rate" to 1000,
+            "rate" to 100,
             "volume" to 1,
-            "pair" to "btcusd",
+            "pair" to "bccusd",
             "orderType" to "limit",
             "nonce" to System.currentTimeMillis())
 
@@ -77,7 +77,7 @@ class CancelTest {
                 .header("Sign", Authenticator.getSignature(resourceBundle.getString("apiSecret"), params))
                 .params(params)
         .`when`()
-                .post("/cancel")
+                .post("/order/cancel")
         .then()
                 .statusCode(200)
         .assertThat()

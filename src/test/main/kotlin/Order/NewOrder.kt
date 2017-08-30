@@ -8,23 +8,21 @@ import Helper.spec
 
 val basicParams = hashMapOf(
         "type" to "buy",
-        "rate" to 1000,
+        "rate" to 100,
         "volume" to 1,
-        "pair" to "btcusd",
+        "pair" to "bccusd",
         "orderType" to "limit",
         "nonce" to System.currentTimeMillis())
 
 fun CreateNewOrder(params : Map<String, Any?>): Number? {
-    val orderId =
-    given()
-            .spec(spec)
-            .header("Sign", Authenticator.getSignature(resourceBundle.getString("apiSecret"), params))
-            .params(params)
+    return given()
+        .spec(spec)
+        .header("Sign", Authenticator.getSignature(resourceBundle.getString("apiSecret"), params))
+        .params(params)
     .`when`()
-            .post("/new")
+        .post("/order/new")
     .then()
-            .statusCode(200)
+        .statusCode(200)
     .extract()
-            .path<Number>("return.orderId")
-    return orderId
+        .path<Number>("return.orderId")
 }

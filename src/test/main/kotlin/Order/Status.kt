@@ -5,10 +5,10 @@ import org.hamcrest.Matchers.equalTo
 import org.junit.Test
 
 class StatusTest {
-    private val validOrderId = 9009797
+    private val validOrderId = 22786815
 
     @Test
-    fun createdOrderOK() {
+    fun CreatedOrderOK() {
         DoRequestAndAssertResult(validOrderId, 1)
     }
 
@@ -72,7 +72,7 @@ class StatusTest {
                 .header("Sign", Authenticator.getSignature(resourceBundle.getString("apiSecret"), params))
                 .params(params)
         .`when`()
-                .post("/status")
+                .post("/order/status")
         .then()
                 .statusCode(200)
         .assertThat()
